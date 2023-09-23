@@ -1,0 +1,1 @@
+Lazyloading using HTML CSS and JS
