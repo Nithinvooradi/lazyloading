@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .app {
+            width: 85vw;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .card {
+            columns: 4 14rem;
+            gap: 1rem;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card img:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        .loading {
+            width: 6rem;
+            height: 5rem;
+            opacity: 0;
+        }
+
+        .loading.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="card">
+            <img src="images/pic1.jpg" alt="">
+            <img src="images/pic2.jpg" alt="">
+            <img src="images/pic3.jpg" alt="">
+            <img src="images/pic4.jpg" alt="">
+            <img src="images/pic5.jpg" alt="">
+            <img src="images/pic6.jpg" alt="">
+            <img src="images/pic7.jpg" alt="">
+            <img src="images/pic8.jpg" alt="">
+            <img src="images/pic9.jpg" alt="">
+            <img src="images/pic10.jpg" alt="">
+            <img src="images/pic12.jpg" alt="">
+            <img src="images/pic11.jpg" alt="">
+        </div>
+        <img src="images/loading.gif" alt="" class="loading">
+    </div>
+
+    <script>
+        const card = document.querySelector('.card');
+        let loading = document.querySelector('.loading');
+        let no_of_images = 10;
+
+        function renderImages() {
+            for (let i = 0; i < no_of_images; ++i) {
+                fetch('https://source.unsplash.com/random/')
+                    .then(res => res.url) // Get the URL from the response
+                    .then(url => {
+                        let img = document.createElement('img');
+                        img.src = url; // Set the src attribute with the URL
+                        card.appendChild(img);
+                    })
+                    .catch(error => console.error(error)); // Handle fetch errors
+            }
+        }
+
+        window.onscroll = () => {
+            const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+            if (scrollTop + clientHeight + 1 >= scrollHeight) {
+                loading.classList.add('show');
+                renderImages();
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
